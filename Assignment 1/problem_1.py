@@ -28,7 +28,19 @@ import matplotlib.pyplot as plt
 def read_image(img_path):
     image = Image.open(img_path)
     width, height = image.size
+    image = np.array(image)
     return image, width, height
+
+
+def insertion_sort(arr):
+    for i in range(1, len(arr)):
+        cur = arr[i]
+        j = i - 1
+        while j >= 0 and cur < arr[j]:
+            arr[j + 1] = arr[j]
+            j -= 1
+        arr[j + 1] = cur
+    return arr
 
 
 #function: Calculate the Median filter based on insertion sort
@@ -36,8 +48,21 @@ def read_image(img_path):
 #Returns: - output_image:2D numpy array
 #         - time consumed by this method
 def median_insertion_sort(image, width, height):
+    out_image = image
+    t1 = time.clock()
 
-    return #out_image, time_consumed
+    for i in range(height - 3):
+        for j in range(width - 3):
+            lst = []
+            for k in range(2):
+                for l in range(2):
+                    lst.append(out_image[i + k][j + l])
+            lst = insertion_sort(lst)
+            out_image[i + 1][j + 1] = lst[1][1]
+
+    time_consumed = time.clock() - t1
+
+    return out_image, time_consumed
 
 
 #function: Calculate the Median filter based on histogram for an image
@@ -54,7 +79,7 @@ def median_histogram(image, width, height):
 #Returns: time consumed of each operation and the resulted images
 def main():
 
-    input_image, width, height=read_image('D:\\Workspace\\Faculty\\4th Year\\Computer Vision\\computer-vision\\Assignment 1\\noisyimg.png')
+    input_image, width, height = read_image("noisyimg.png")
 
     img_1, time_1 = median_insertion_sort(input_image, width, height)
 
