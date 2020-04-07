@@ -26,9 +26,9 @@ import matplotlib.pyplot as plt
 #         - image width
 #         - image height
 def read_image(img_path):
-
-
-    return # img, width, height
+    image = Image.open(img_path)
+    width, height = image.size
+    return image, width, height
 
 
 #function: Calculate the Median filter based on insertion sort
@@ -54,15 +54,15 @@ def median_histogram(image, width, height):
 #Returns: time consumed of each operation and the resulted images
 def main():
 
-    input_image, width, height=read_image('image_path')
+    input_image, width, height=read_image('D:\\Workspace\\Faculty\\4th Year\\Computer Vision\\computer-vision\\Assignment 1\\noisyimg.png')
 
-    img_1, time_1= median_insertion_sort(input_image, width, height)
+    img_1, time_1 = median_insertion_sort(input_image, width, height)
 
-    img_2, time_2=median_histogram(input_image, width, height)
+    img_2, time_2 = median_histogram(input_image, width, height)
 
 
     return (img_1, time_1), (img_2, time_2)
 
 
-res_1 , res_2 = main()
+res_1, res_2 = main()
 
