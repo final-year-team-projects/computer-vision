@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image, ImageDraw
+from PIL import Image
 import collections
 
 
@@ -91,6 +91,7 @@ def MeanThenMedian(input_image, width, height):
     out = MedianFilterHist(MeanFilter(input_image, width, height), width, height)
     return out
 
+
 # function:Subtract both images and return the difference between them
 # Input: image1, image2
 # Returns: difference: 2d numpy array
@@ -110,7 +111,8 @@ def main():
     img2 = MeanThenMedian(input_image, width, height)
 
     difference = CompareImages(img1, img2)
-
+    #plt.imshow(difference, cmap='gray')
+    #plt.show()
     return img1, img2, difference
 
 
