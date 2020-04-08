@@ -25,9 +25,9 @@ def read_image(noisyimg):
     height = int(img.size[1])
     img = img.load()
     input_img = np.zeros((width, height))
-    for i in range(width):
-        for j in range(height):
-            input_img[i, j] = img[i, j]
+    for i in range(height):
+        for j in range(width):
+            input_img[j, i] = img[i, j]
     return input_img, width, height
 
 
