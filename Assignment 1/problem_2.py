@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageDraw
+import collections
 
 
 # NOTE:  Use PILLOW library ONLY for reading image
@@ -55,20 +56,23 @@ def MeanFilter(image, width, height):
 # Returns: output_image:2D numpy array
 def MedianFilterHist(image, width, height):
     # use kernel of size 3x3
-
     dx = [-1, -1, -1, 0, 0, 1, 1, 1]
     dy = [1, 0, -1, 1, -1, 1, 0, -1]
     out = np.zeros((width, height))
     for i in range(width):
         for j in range(height):
-            l = []
+            hist = collections.Counter()
             for k in range(8):
                 x = i + dx[k]
                 y = j + dy[k]
                 if 0 <= x < height and 0 <= y < width:
-                    l.append(image[x, y])
-            l.sort()
-            out[i, j] = l[len(l) // 2]
+                    hist[image[x, y]] += 1
+            s = 0
+            for k in sorted(hist.keys()):
+                s += hist[k]
+                if s >= (9 // 2):
+                    out[i, j] = k
+                    break
     return out
 
 
