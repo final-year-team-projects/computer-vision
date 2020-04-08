@@ -59,8 +59,8 @@ def MedianFilterHist(image, width, height):
     dx = [-1, -1, -1, 0, 0, 1, 1, 1]
     dy = [1, 0, -1, 1, -1, 1, 0, -1]
     out = np.zeros((width, height))
-    for i in range(width):
-        for j in range(height):
+    for i in range(height):
+        for j in range(width):
             hist = collections.Counter()
             for k in range(8):
                 x = i + dx[k]
@@ -70,7 +70,7 @@ def MedianFilterHist(image, width, height):
             s = 0
             for k in sorted(hist.keys()):
                 s += hist[k]
-                if s >= (9 // 2):
+                if s > (9 // 2):
                     out[i, j] = k
                     break
     return out
@@ -102,33 +102,14 @@ def CompareImages(image1, image2):
     return diff
 
 
-def viewChange(input_image, width, height, fn):
-
-    outImg = Image.new("RGB", (width, height))
-    drawableOut = ImageDraw.Draw(outImg)
-    image = MedianFilterHist(input_image, width, height)
-    if fn == 0:
-        image = MeanFilter(input_image, width, height)
-    elif fn == 2:
-        image = input_image
-    for i in range(len(image)):
-        for j in range(len(image)):
-            drawableOut.point((i, j), (int(image[i, j]), int(image[i, j]), int(image[i, j])))
-
-    outImg.save("out" + str(fn) + ".png")
-
-
 def main():
     input_image, width, height = read_image('noisyimg.png')
 
     img1 = MedianThenMean(input_image, width, height)
-    #viewChange(img1, width, height, 1)
 
     img2 = MeanThenMedian(input_image, width, height)
-    #viewChange(img2, width, height, 0)
 
     difference = CompareImages(img1, img2)
-    #viewChange(difference, width, height, 2)
 
     return img1, img2, difference
 
