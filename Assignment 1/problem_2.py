@@ -113,6 +113,7 @@ def viewChange(input_image, width, height, fn):
 
     outImg.save("out" + str(fn) + ".png")
 
+
 def main():
     input_image, width, height = read_image('noisyimg.png')
 
