@@ -2,7 +2,7 @@ import time
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
-
+import collections
 
 
 #
@@ -48,19 +48,20 @@ def insertion_sort(arr):
 #Returns: - output_image:2D numpy array
 #         - time consumed by this method
 def median_insertion_sort(image, width, height):
-    out_image = image
-    t1 = time.clock()
+    t1 = time.time()
 
-    for i in range(height - 3):
-        for j in range(width - 3):
+    out_image = image
+
+    for i in range(height - 2):
+        for j in range(width - 2):
             lst = []
-            for k in range(2):
-                for l in range(2):
+            for k in range(3):
+                for l in range(3):
                     lst.append(out_image[i + k][j + l])
             lst = insertion_sort(lst)
-            out_image[i + 1][j + 1] = lst[1][1]
+            out_image[i + 1][j + 1] = lst[4]
 
-    time_consumed = time.clock() - t1
+    time_consumed = time.time() - t1
 
     return out_image, time_consumed
 
@@ -71,7 +72,27 @@ def median_insertion_sort(image, width, height):
 #         - time consumed by this method
 def median_histogram(image, width, height):
 
-    return # out_image, time_consumed
+    t1 = time.time()
+    dx = [-1, -1, -1, 0, 0, 1, 1, 1]
+    dy = [1, 0, -1, 1, -1, 1, 0, -1]
+    out_image = np.zeros((width, height))
+    for i in range(height):
+        for j in range(width):
+            hist = collections.Counter()
+            for k in range(8):
+                x = i + dx[k]
+                y = j + dy[k]
+                if 0 <= x < height and 0 <= y < width:
+                    hist[image[x, y]] += 1
+            s = 0
+            for k in sorted(hist.keys()):
+                s += hist[k]
+                if s > (9 // 2):
+                    out_image[i, j] = k
+                    break
+    time_consumed = time.time() - t1
+    
+    return out_image, time_consumed
 
 
 #function: auxillary function for running script
@@ -84,7 +105,6 @@ def main():
     img_1, time_1 = median_insertion_sort(input_image, width, height)
 
     img_2, time_2 = median_histogram(input_image, width, height)
-
 
     return (img_1, time_1), (img_2, time_2)
 
